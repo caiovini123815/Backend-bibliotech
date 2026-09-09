@@ -42,7 +42,7 @@ public class users {
     private String isadmin;
 
     @Column(name = "is_Disable" ,nullable = false)
-    private String isDisable;
+    private String isdisable;
 
     @Column(name = "create_At" ,nullable = false)
     private String crateAt;
