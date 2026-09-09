@@ -48,6 +48,6 @@ public class users {
     private String createat;
 
     @Column(name = "update_At" ,nullable = false)
-    private String updateAt;
+    private String updateat;
 
 }
