@@ -39,7 +39,7 @@ public class users {
     private String password;
 
     @Column(name = "is_Admin" ,nullable = false)
-    private String isAdmin;
+    private String isadmin;
 
     @Column(name = "is_Disable" ,nullable = false)
     private String isDisable;
