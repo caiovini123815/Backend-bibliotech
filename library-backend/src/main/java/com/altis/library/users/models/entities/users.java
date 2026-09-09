@@ -22,11 +22,11 @@ public class users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name" ,nullable = false, length = 50)
-    private String name;
+    @Column(name = "namefull" ,nullable = false, length = 50)
+    private String nameFull;
 
-    @Column(name = "birth_Date" ,nullable = false)
-    private LocalDate birthdate;
+    @Column(name = "email" ,nullable = false, unique = true, length = 150)
+    private String email;
 
     @Column(name = "cpf" ,nullable = false, unique = true, length = 11)
     private String cpf;
@@ -34,8 +34,8 @@ public class users {
     @Column(name = "phone" ,nullable = false, length = 15)
     private String phone;
 
-    @Column(name = "email" ,nullable = false, unique = true, length = 150)
-    private String email;
+    @Column(name = "birth_date" ,nullable = false)
+    private LocalDate birthDate;
 
     @Column(name = "address" ,nullable = false)
     private String address;
@@ -44,17 +44,17 @@ public class users {
     private String password;
 
     @Column(name = "is_admin" ,nullable = false)
-    private String isadmin;
+    private String isAdmin;
 
     @Column(name = "is_disable" ,nullable = false)
-    private String isdisable;
+    private String isDisable;
 
     @CreatedDate
     @Column(name = "create_dt", nullable = false, updatable = false)
-    private LocalDateTime createdt;
+    private LocalDateTime createDt;
 
     @LastModifiedDate
     @Column(name = "update_dt", nullable = false)
-    private LocalDateTime updatedt;
+    private LocalDateTime updateDt;
 
 }
