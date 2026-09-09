@@ -1,0 +1,14 @@
+CREATE TABLE users (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    birth_date DATE NOT NULL,
+    cpf VARCHAR(11) NOT NULL UNIQUE,
+    phone VARCHAR(15) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    address VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    is_admin VARCHAR(255) NOT NULL,
+    is_disable VARCHAR(255) NOT NULL,
+    create_at VARCHAR(255) NOT NULL,
+    update_at VARCHAR(255) NOT NULL
+);
