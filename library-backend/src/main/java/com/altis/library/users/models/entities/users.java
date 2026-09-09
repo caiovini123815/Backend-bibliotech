@@ -45,7 +45,7 @@ public class users {
     private String isdisable;
 
     @Column(name = "create_At" ,nullable = false)
-    private String crateAt;
+    private String createat;
 
     @Column(name = "update_At" ,nullable = false)
     private String updateAt;
