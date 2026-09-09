@@ -9,6 +9,6 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     is_admin VARCHAR(255) NOT NULL,
     is_disable VARCHAR(255) NOT NULL,
-    create_at VARCHAR(255) NOT NULL,
-    update_at VARCHAR(255) NOT NULL
+    create_dt TIMESTAMP NOT NULL,
+    update_dt TIMESTAMP NOT NULL
 );

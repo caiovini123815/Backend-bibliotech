@@ -1,8 +1,12 @@
 package com.altis.library.users.models.entities;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -11,6 +15,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 
 public class users {
     @Id
@@ -21,7 +26,7 @@ public class users {
     private String name;
 
     @Column(name = "birth_Date" ,nullable = false)
-    private LocalDate birthDate;
+    private LocalDate birthdate;
 
     @Column(name = "cpf" ,nullable = false, unique = true, length = 11)
     private String cpf;
@@ -38,16 +43,18 @@ public class users {
     @Column(name = "password" ,nullable = false)
     private String password;
 
-    @Column(name = "is_Admin" ,nullable = false)
+    @Column(name = "is_admin" ,nullable = false)
     private String isadmin;
 
-    @Column(name = "is_Disable" ,nullable = false)
+    @Column(name = "is_disable" ,nullable = false)
     private String isdisable;
 
-    @Column(name = "create_At" ,nullable = false)
-    private String createat;
+    @CreatedDate
+    @Column(name = "create_dt", nullable = false, updatable = false)
+    private LocalDateTime createdt;
 
-    @Column(name = "update_At" ,nullable = false)
-    private String updateat;
+    @LastModifiedDate
+    @Column(name = "update_dt", nullable = false)
+    private LocalDateTime updatedt;
 
 }
