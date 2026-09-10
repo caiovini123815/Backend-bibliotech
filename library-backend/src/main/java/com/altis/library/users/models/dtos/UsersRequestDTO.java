@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
-public record RegisterRequestDTO(
+public record UsersRequestDTO(
         @NotBlank(message = "This field is required, please enter your full name!")
         @Size(min = 3,max = 100, message = "The name must be between 3 and 100 characters long, please follow the rules!")
         @Pattern(
@@ -44,6 +44,14 @@ public record RegisterRequestDTO(
         @Pattern(
                 regexp = "^[a-zA-ZáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ\\s]+,\\s\\d+\\s-\\s[a-zA-ZáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ\\s]+$",
                 message = "The address must be in the format: Street Name, Number - City Name!"
-        )String address
+        )String address,
+
+        @NotBlank(message = "The password is required, please enter your password!")
+        @Size(min = 10, max = 30, message = "The password must be between 5 and 30 characters long, please follow the rules!")
+        @Pattern(
+                regexp = "^(?=.*[A-Z]) (?=.*\\d)[a-zA-Z\\d]+$",
+                message = "The password must contain only letters and numbers, including at least one uppercase letter and one number, please follow the rules!"
+
+        )String password
 
 ) {}
