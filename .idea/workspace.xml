@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a0fb4d3d-5592-4460-bda7-2e207a848861" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/_library-backend.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-backend/src/main/java/com/altis/library/users/models/dtos/PublishersRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-backend/src/main/java/com/altis/library/users/models/dtos/PublishersResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-backend/src/main/java/com/altis/library/users/models/dtos/RegisterRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-backend/src/main/java/com/altis/library/users/models/dtos/RegisterResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-backend/src/main/java/com/altis/library/users/models/entities/books.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/library-backend/src/main/java/com/altis/library/users/models/entities/publishers.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/library-backend/src/main/java/com/altis/library/users/models/dtos/RegisterRequestDTO.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="3IsLLPJ0NGLgW9GnXZutdhhRel4" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.LibraryBackendApplication.executor": "Run",
+    "JUnit.LibraryBackendApplicationTests.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "develop",
+    "last_opened_file_path": "C:/Users/israe/OneDrive/Documentos/_library-backend",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.customizations"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "PLAIN_TEXT"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\israe\OneDrive\Documentos\_library-backend\library-backend\src\main\resources\db\migration" />
+      <recent name="C:\Users\israe\OneDrive\Documentos\_library-backend\library-backend\src\main\resources\db.\migration" />
+    </key>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a0fb4d3d-5592-4460-bda7-2e207a848861" name="Changes" comment="" />
+      <created>1788548273599</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1788548273599</updated>
+    </task>
+    <task id="LOCAL-00001" summary="reformulation admin">
+      <option name="closed" value="true" />
+      <created>1788921048660</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1788921048660</updated>
+    </task>
+    <task id="LOCAL-00002" summary="reformulation disable">
+      <option name="closed" value="true" />
+      <created>1788921077769</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1788921077769</updated>
+    </task>
+    <task id="LOCAL-00003" summary="reformulation createdt">
+      <option name="closed" value="true" />
+      <created>1788921096237</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1788921096238</updated>
+    </task>
+    <task id="LOCAL-00004" summary="reformulation updatedt">
+      <option name="closed" value="true" />
+      <created>1788921110611</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1788921110611</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="reformulation admin" />
+    <MESSAGE value="reformulation disable" />
+    <MESSAGE value="reformulation createdt" />
+    <MESSAGE value="reformulation updatedt" />
+    <option name="LAST_COMMIT_MESSAGE" value="reformulation updatedt" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/_library_backend$LibraryBackendApplicationTests.ic" NAME="LibraryBackendApplicationTests Coverage Results" MODIFIED="1788885269837" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>com.altis.library.*</FILTER>
+    </SUITE>
+  </component>
+</project>
