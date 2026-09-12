@@ -4,7 +4,7 @@ CREATE TABLE users (
     email VARCHAR(150) NOT NULL UNIQUE,
     cpf VARCHAR(11) NOT NULL UNIQUE,
     phone VARCHAR(15) NOT NULL,
-    birth_date DATE NOT NULL,
+    birth_date DATE NOT NULL UNIQUE,
     address VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     is_admin VARCHAR(255) NOT NULL,

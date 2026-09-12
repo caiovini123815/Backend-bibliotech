@@ -34,7 +34,7 @@ public class users {
     @Column(name = "phone" ,nullable = false, length = 15)
     private String phone;
 
-    @Column(name = "birth_date" ,nullable = false)
+    @Column(name = "birth_date" ,unique = true, nullable = false)
     private LocalDate birthDate;
 
     @Column(name = "address" ,nullable = false)
