@@ -2,6 +2,7 @@ package com.altis.library.users.services;
 
 import com.altis.library.users.models.entities.users;
 import com.altis.library.users.repositories.UsersRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +11,12 @@ import java.util.List;
 public class UsersService {
 
     private final UsersRepository usersRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsersService(UsersRepository usersRepository) {
+    public UsersService(UsersRepository usersRepository,
+                        PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public users create(users user) {
@@ -24,6 +28,7 @@ public class UsersService {
         if (usersRepository.existsByCpf(user.getCpf())) {
             throw new RuntimeException("CPF already registered");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return usersRepository.save(user);
     }
@@ -48,7 +53,9 @@ public class UsersService {
         user.setPhone(userData.getPhone());
         user.setBirthDate(userData.getBirthDate());
         user.setAddress(userData.getAddress());
-        user.setPassword(userData.getPassword());
+
+        user.setPassword(passwordEncoder.encode(userData.getPassword()));
+
         user.setIsAdmin(userData.getIsAdmin());
         user.setIsDisable(userData.getIsDisable());
 
