@@ -1,0 +1,8 @@
+CREATE TABLE publishers(
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name_publisher VARCHAR(50) NOT NULL,
+    cnpj VARCHAR(14) NOT NULL UNIQUE,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    phone_publisher VARCHAR(15)NOT NULL,
+    website VARCHAR(255) NOT NULL
+)

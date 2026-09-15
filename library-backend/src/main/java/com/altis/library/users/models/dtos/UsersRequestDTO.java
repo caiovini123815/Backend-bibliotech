@@ -28,7 +28,7 @@ public record UsersRequestDTO(
         @NotBlank(message = "This field is required, please enter your phone!")
         @Size(min = 14,max = 15,message = "Your phone number must contain 14 and 15 digits long, please enter your phone number correctly!")
         @Pattern(
-                regexp = "^\\(\\d{2}\\)\\s\\d{4,5}-\\{4}$",
+                regexp = "^\\(\\d{2}\\)\\s\\d{4,5}-\\d{4}$",
                 message = "The phone number must be in the format (00) 00000-0000!"
         )String phone,
 
