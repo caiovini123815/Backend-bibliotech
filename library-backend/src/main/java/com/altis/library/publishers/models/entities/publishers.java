@@ -29,7 +29,7 @@ public class publishers {
     @Column(name = "phone_publisher" ,nullable = false, length = 15)
     private String phonePublisher;
 
-    @Column(name = "website_publisher", length = 255)
-    private String websitePublisher;
+    @Column(name = "website", length = 255)
+    private String website;
 
 }

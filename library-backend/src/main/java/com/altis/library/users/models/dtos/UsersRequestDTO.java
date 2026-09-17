@@ -18,11 +18,11 @@ public record UsersRequestDTO(
 
         @NotBlank(message = "The email address is mandatory, please enter your email!")
         @Email(message = "Invalid email format, please enter your email correctly!")
-        @Size(min = 5, max = 100 ,message = "The email must be between 5 and 100 characters long, please follow the rules!")
+        @Size(min = 5, max = 150 ,message = "The email must be between 5 and 100 characters long, please follow the rules!")
         String email,
 
         @NotBlank(message = "This field is required, please enter your CPF!")
-        @CPF(message = "Invalid CPF format, please enter your CPF correctly!")
+        @Size(min = 15,max = 15,message = "The cpf must contain 15 digits long,please follow the rules!")
         String cpf,
 
         @NotBlank(message = "This field is required, please enter your phone!")
@@ -47,7 +47,7 @@ public record UsersRequestDTO(
         )String address,
 
         @NotBlank(message = "The password is required, please enter your password!")
-        @Size(min = 10, max = 30, message = "The password must be between 5 and 30 characters long, please follow the rules!")
+        @Size(min = 8, max = 72, message = "The password must be between 5 and 30 characters long, please follow the rules!")
         @Pattern(
                 regexp = "^(?=.*[A-Z]) (?=.*\\d)[a-zA-Z\\d]+$",
                 message = "The password must contain only letters and numbers, including at least one uppercase letter and one number, please follow the rules!"

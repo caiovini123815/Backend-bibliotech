@@ -45,7 +45,7 @@ public class PublishersServices {
         publisher.setNamePublisher(publisherData.getNamePublisher());
         publisher.setEmail(publisherData.getEmail());
         publisher.setPhonePublisher(publisherData.getPhonePublisher());
-        publisher.setWebsitePublisher(publisherData.getWebsitePublisher());
+        publisher.setWebsite(publisherData.getWebsite());
 
         return publishersRepository.save(publisher);
     }

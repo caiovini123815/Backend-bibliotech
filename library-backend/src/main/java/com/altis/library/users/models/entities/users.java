@@ -22,19 +22,19 @@ public class users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_full" ,nullable = false, length = 50)
+    @Column(name = "name_full" ,nullable = false, length = 100)
     private String nameFull;
 
     @Column(name = "email" ,nullable = false, unique = true, length = 150)
     private String email;
 
-    @Column(name = "cpf" ,nullable = false, unique = true, length = 11)
+    @Column(name = "cpf" ,nullable = false, unique = true, length = 15)
     private String cpf;
 
     @Column(name = "phone" ,nullable = false, length = 15)
     private String phone;
 
-    @Column(name = "birth_date" ,unique = true, nullable = false)
+    @Column(name = "birth_date" , nullable = false)
     private LocalDate birthDate;
 
     @Column(name = "address" ,nullable = false)
