@@ -47,6 +47,16 @@ public class PublishersControllers {
         );
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<publishers> partialUpdate(
+            @PathVariable Long id,
+            @RequestBody publishers publisherData) {
+
+        return ResponseEntity.ok(
+                publishersServices.partialUpdate(id, publisherData)
+        );
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
 

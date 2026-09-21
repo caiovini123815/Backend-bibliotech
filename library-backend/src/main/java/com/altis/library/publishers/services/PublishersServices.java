@@ -50,6 +50,29 @@ public class PublishersServices {
         return publishersRepository.save(publisher);
     }
 
+    public publishers partialUpdate(Long id, publishers publisherData) {
+
+        publishers publisher = findById(id);
+
+        if (publisherData.getNamePublisher() != null) {
+            publisher.setNamePublisher(publisherData.getNamePublisher());
+        }
+
+        if (publisherData.getEmail() != null) {
+            publisher.setEmail(publisherData.getEmail());
+        }
+
+        if (publisherData.getPhonePublisher() != null) {
+            publisher.setPhonePublisher(publisherData.getPhonePublisher());
+        }
+
+        if (publisherData.getWebsite() != null) {
+            publisher.setWebsite(publisherData.getWebsite());
+        }
+
+        return publishersRepository.save(publisher);
+    }
+
     public void delete(Long id) {
 
         publishers publisher = findById(id);

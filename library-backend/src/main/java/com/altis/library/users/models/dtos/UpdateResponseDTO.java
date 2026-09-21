@@ -11,8 +11,8 @@ public record UpdateResponseDTO(
         String phone,
         LocalDate dateBirth,
         String address,
-        String isAdmin,
-        String isDisable,
+        Boolean isAdmin,
+        Boolean isDisable,
         LocalDateTime createDt,
         LocalDateTime updateDt
 

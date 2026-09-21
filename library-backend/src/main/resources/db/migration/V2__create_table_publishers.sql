@@ -1,8 +1,10 @@
 CREATE TABLE publishers(
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name_publisher VARCHAR(50) NOT NULL,
+    name_publisher VARCHAR(100) NOT NULL,
     cnpj VARCHAR(14) NOT NULL UNIQUE,
     email VARCHAR(150) NOT NULL UNIQUE,
     phone_publisher VARCHAR(15)NOT NULL,
-    website VARCHAR(255) NOT NULL
-)
+    website VARCHAR(255) NOT NULL,
+    create_dt TIMESTAMP NOT NULL,
+    update_dt TIMESTAMP NOT NULL
+);

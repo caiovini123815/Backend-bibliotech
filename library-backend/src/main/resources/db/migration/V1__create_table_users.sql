@@ -7,8 +7,8 @@ CREATE TABLE users (
     birth_date DATE NOT NULL,
     address VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    is_admin VARCHAR(255) NOT NULL,
-    is_disable VARCHAR(255) NOT NULL,
+    is_admin BOOLEAN NOT NULL DEFAULT FALSE,
+    is_disable BOOLEAN NOT NULL DEFAULT TRUE,
     create_dt TIMESTAMP NOT NULL,
     update_dt TIMESTAMP NOT NULL
 );

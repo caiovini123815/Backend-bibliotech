@@ -1,0 +1,50 @@
+package com.altis.library.books.models.dtos;
+
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
+import java.time.LocalDate;
+
+public record BooksRequestDTO(
+
+        @NotBlank(message = "This field is required, please enter title book!")
+        @Size(min = 3,max = 100, message = "The title must be between 3 and 100 characters long, please follow the rules!")
+        @Pattern(
+                regexp = "^[a-zA-ZáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ\\s]+$",
+                message = "The title must contain only uppercase or lowercase letters, including accents and spaces!"
+        )String title,
+
+        @NotBlank(message = "This field is required, please enter your isbn!")
+        @Size(min = 13,max = 13, message = "The isbn must be between 14 digits long, please follow the rules!")
+        @Pattern(
+                regexp = "^(978|979)\\d{10}$",
+                message = "The isbn number mus e in the format ex: 9789875342536 or 9799875342536"
+        )String isbn,
+
+        @NotNull
+        @Schema(
+                description = "Publication date in YYYY-MM-DD format",
+                example = "2026-09-20"
+        )LocalDate publicationDate,
+
+        @NotNull(message = "This field is required, please enter the genre!")
+        @Size(min = 3,max = 100, message = "The genre must be between 3 and 100 characters long, please follow the rules!")
+        @Pattern(
+                regexp = "^[a-zA-ZáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ\\s]+$",
+                message = "The genre must contain only uppercase or lowercase letters, including accents and spaces!"
+        )String genre,
+
+        @NotNull(message = "This field is required, please enter the number of pages!")
+        @Min(value = 1, message = "The number of pages must be at least 1!"
+        )Integer numberPages,
+
+        @NotNull(message = "This field is required, please enter your quantity of books!")
+        @Min(value = 1, message = "Quantity must be at least 1"
+        )Integer quantity,
+
+        @NotNull(message = "Publisher is required")
+        @Positive(message = "Publisher ID must be greater than 0!"
+        )Long publisherId
+
+
+) {}

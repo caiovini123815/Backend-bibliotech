@@ -19,6 +19,7 @@ public class UsersController {
 
     @PostMapping
     public ResponseEntity<users> create(@RequestBody users user) {
+
         users createdUser = usersService.create(user);
 
         return ResponseEntity.ok(createdUser);
@@ -26,11 +27,13 @@ public class UsersController {
 
     @GetMapping
     public ResponseEntity<List<users>> findAll() {
+
         return ResponseEntity.ok(usersService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<users> findById(@PathVariable Long id) {
+
         return ResponseEntity.ok(usersService.findById(id));
     }
 
@@ -39,7 +42,21 @@ public class UsersController {
             @PathVariable Long id,
             @RequestBody users userData
     ) {
-        return ResponseEntity.ok(usersService.update(id, userData));
+
+        return ResponseEntity.ok(
+                usersService.update(id, userData)
+        );
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<users> partialUpdate(
+            @PathVariable Long id,
+            @RequestBody users userData
+    ) {
+
+        return ResponseEntity.ok(
+                usersService.partialUpdate(id, userData)
+        );
     }
 
     @DeleteMapping("/{id}")

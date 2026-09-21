@@ -3,6 +3,11 @@ package com.altis.library.publishers.models.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "publishers")
@@ -11,6 +16,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class publishers {
 
     @Id
@@ -29,7 +35,15 @@ public class publishers {
     @Column(name = "phone_publisher" ,nullable = false, length = 15)
     private String phonePublisher;
 
-    @Column(name = "website", length = 255)
+    @Column(name = "website",nullable = false, length = 255)
     private String website;
+
+    @CreatedDate
+    @Column(name = "create_dt", nullable = false, updatable = false)
+    private LocalDateTime createDt;
+
+    @LastModifiedDate
+    @Column(name = "update_dt", nullable = false)
+    private LocalDateTime updateDt;
 
 }

@@ -62,6 +62,51 @@ public class UsersService {
         return usersRepository.save(user);
     }
 
+    public users partialUpdate(Long id, users userData) {
+
+        users user = findById(id);
+
+        if (userData.getNameFull() != null) {
+            user.setNameFull(userData.getNameFull());
+        }
+
+        if (userData.getEmail() != null) {
+            user.setEmail(userData.getEmail());
+        }
+
+        if (userData.getCpf() != null) {
+            user.setCpf(userData.getCpf());
+        }
+
+        if (userData.getPhone() != null) {
+            user.setPhone(userData.getPhone());
+        }
+
+        if (userData.getBirthDate() != null) {
+            user.setBirthDate(userData.getBirthDate());
+        }
+
+        if (userData.getAddress() != null) {
+            user.setAddress(userData.getAddress());
+        }
+
+        if (userData.getPassword() != null) {
+            user.setPassword(
+                    passwordEncoder.encode(userData.getPassword())
+            );
+        }
+
+        if (userData.getIsAdmin() != null) {
+            user.setIsAdmin(userData.getIsAdmin());
+        }
+
+        if (userData.getIsDisable() != null) {
+            user.setIsDisable(userData.getIsDisable());
+        }
+
+        return usersRepository.save(user);
+    }
+
     public void delete(Long id) {
 
         users user = findById(id);

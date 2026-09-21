@@ -44,10 +44,10 @@ public class users {
     private String password;
 
     @Column(name = "is_admin" ,nullable = false)
-    private String isAdmin;
+    private Boolean isAdmin;
 
     @Column(name = "is_disable" ,nullable = false)
-    private String isDisable;
+    private Boolean isDisable;
 
     @CreatedDate
     @Column(name = "create_dt", nullable = false, updatable = false)
