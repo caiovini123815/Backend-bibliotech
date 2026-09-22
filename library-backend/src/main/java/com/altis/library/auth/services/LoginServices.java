@@ -1,7 +1,7 @@
-package com.altis.library.login.services;
+package com.altis.library.auth.services;
 
-import com.altis.library.login.models.dtos.LoginRequestDTO;
-import com.altis.library.login.models.dtos.LoginResponseDTO;
+import com.altis.library.auth.models.dtos.LoginRequestDTO;
+import com.altis.library.auth.models.dtos.LoginResponseDTO;
 import com.altis.library.users.models.entities.users;
 import com.altis.library.users.repositories.UsersRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,13 +12,18 @@ public class LoginServices {
 
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenServices tokenServices;
 
     public LoginServices(
             UsersRepository usersRepository,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            TokenServices tokenServices
     ) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tokenServices = tokenServices;
+
+
     }
 
     public LoginResponseDTO login(LoginRequestDTO loginData) {
@@ -35,12 +40,14 @@ public class LoginServices {
         )) {
             throw new RuntimeException("Invalid email or password");
         }
+        String token = tokenServices.generateToken(user);
 
         return new LoginResponseDTO(
                 user.getId(),
                 user.getNameFull(),
                 user.getEmail(),
-                user.getIsAdmin()
+                user.getIsAdmin(),
+                token
         );
     }
 }
