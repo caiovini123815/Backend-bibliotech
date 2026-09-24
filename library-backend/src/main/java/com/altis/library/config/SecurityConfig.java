@@ -28,8 +28,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS))
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
 
@@ -37,15 +36,14 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.POST, "/forgot-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/reset-password").permitAll()
-
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
-                        ).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/register").permitAll()
 
 
-                        .requestMatchers(HttpMethod.POST, "/users/**").authenticated()
 
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
+
+                        .requestMatchers(HttpMethod.POST, "/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/users/**").hasRole("ADMIN")
@@ -69,33 +67,26 @@ public class SecurityConfig {
 
 
 
-                        .requestMatchers(HttpMethod.GET, "/rents/**").authenticated()
 
+                        .requestMatchers(HttpMethod.GET, "/rents/me").authenticated()
+
+                        .requestMatchers(HttpMethod.GET, "/rents/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/rents/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/rents/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/rents/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/rents/**").hasRole("ADMIN")
 
 
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/dashboard/admin"
-                        ).hasRole("ADMIN")
 
 
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/dashboard/user"
-                        ).authenticated()
+                        .requestMatchers(HttpMethod.GET, "/dashboard/admin").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/dashboard/user").authenticated()
 
 
                         .anyRequest().authenticated()
 
                 ).oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(jwt ->
-                                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)
-                        )
-                );
+                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
 
         return http.build();
     }

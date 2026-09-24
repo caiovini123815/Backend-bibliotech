@@ -42,6 +42,13 @@ public class LoginServices {
         )) {
             throw new RuntimeException("Invalid email or password");
         }
+
+
+        if (Boolean.TRUE.equals(user.getIsDisable())) {
+            throw new RuntimeException(
+                    "User is disabled and cannot login"
+            );
+        }
         String token = tokenServices.generateToken(user);
 
         return new LoginResponseDTO(

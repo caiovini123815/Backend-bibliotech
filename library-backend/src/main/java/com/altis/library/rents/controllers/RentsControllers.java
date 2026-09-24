@@ -6,12 +6,15 @@ import com.altis.library.rents.models.dtos.UpdateRequestDTO;
 import com.altis.library.rents.models.entities.rents;
 import com.altis.library.rents.services.RentsServices;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/rents")
@@ -42,8 +45,12 @@ public class RentsControllers {
     }
 
     @GetMapping
-    public ResponseEntity<List<rents>> findAll() {
-        return ResponseEntity.ok(rentsServices.findAll());
+    public ResponseEntity<Page<rents>> findAll(
+            Pageable pageable
+    ) {
+        return ResponseEntity.ok(
+                rentsServices.findAll(pageable)
+        );
     }
 
     @GetMapping("/{id}")
@@ -80,11 +87,20 @@ public class RentsControllers {
         );
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    @GetMapping("/me")
+    public ResponseEntity<Page<rents>> findMyRents(
+            @AuthenticationPrincipal Jwt jwt,
+            Pageable pageable
+    ) {
 
-        rentsServices.delete(id);
+        Long userId = jwt.getClaim("userId");
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                rentsServices.findMyRents(
+                        userId,
+                        pageable
+                )
+        );
     }
+
 }

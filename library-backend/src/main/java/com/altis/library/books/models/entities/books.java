@@ -2,6 +2,7 @@ package com.altis.library.books.models.entities;
 
 
 import com.altis.library.publishers.models.entities.publishers;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,6 +29,7 @@ public class books {
     @Column(name = "title", nullable = false, length = 150)
     private String title;
 
+    @JsonIgnore
     @Column(name = "isbn",nullable = false, unique = true, length = 13)
     private String isbn;
 

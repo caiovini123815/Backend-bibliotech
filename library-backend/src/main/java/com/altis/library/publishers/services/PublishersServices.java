@@ -5,10 +5,12 @@ import com.altis.library.publishers.models.dtos.PublishersRequestDTO;
 import com.altis.library.publishers.models.dtos.PublishersResponseDTO;
 import com.altis.library.publishers.models.entities.publishers;
 import com.altis.library.publishers.repositories.PublishersRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+
 
 @Service
 public class PublishersServices {
@@ -58,8 +60,18 @@ public class PublishersServices {
     }
 
     @Transactional(readOnly = true)
-    public List<publishers> findAll() {
-        return publishersRepository.findAll();
+    public Page<PublishersResponseDTO> findAll(Pageable pageable) {
+
+        return publishersRepository
+                .findAll(pageable)
+                .map(publisher -> new PublishersResponseDTO(
+                        publisher.getId(),
+                        publisher.getNamePublisher(),
+                        publisher.getPhonePublisher(),
+                        publisher.getWebsite(),
+                        publisher.getCreateDt(),
+                        publisher.getUpdateDt()
+                ));
     }
 
     @Transactional(readOnly = true)

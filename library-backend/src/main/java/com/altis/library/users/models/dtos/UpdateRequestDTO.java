@@ -1,12 +1,9 @@
 package com.altis.library.users.models.dtos;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDate;
 
 public record UpdateRequestDTO(
         @NotBlank(message = "This field is required, please enter your full name!")
@@ -23,11 +20,6 @@ public record UpdateRequestDTO(
                 message = "The phone number must be in the format (00) 00000-0000!"
         )String phone,
 
-
-        @Schema(
-                description = "User date of birth in YYYY-MM-DD format",
-                example = "2000-05-01"
-        )LocalDate birthDate,
 
         @NotBlank(message = "This field is required, please enter your address correctly!")
         @Size(min = 10,max = 150,message = "Your address must contain 10 and 150 characters long, please enter your address correctly!")

@@ -5,12 +5,13 @@ import com.altis.library.publishers.models.dtos.PublishersResponseDTO;
 import com.altis.library.publishers.models.entities.publishers;
 import com.altis.library.publishers.services.PublishersServices;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/publishers")
@@ -41,9 +42,12 @@ public class PublishersControllers {
     }
 
     @GetMapping
-    public ResponseEntity<List<publishers>> findAll() {
-
-        return ResponseEntity.ok(publishersServices.findAll());
+    public ResponseEntity<Page<PublishersResponseDTO>> findAll(
+            Pageable pageable
+    ) {
+        return ResponseEntity.ok(
+                publishersServices.findAll(pageable)
+        );
     }
 
     @GetMapping("/{id}")

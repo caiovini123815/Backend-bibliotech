@@ -1,6 +1,7 @@
 package com.altis.library.publishers.models.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,9 +27,11 @@ public class publishers {
     @Column(name = "name_publisher" ,nullable = false, length = 50)
     private String namePublisher;
 
+    @JsonIgnore
     @Column(name = "cnpj", unique = true, length = 14)
     private String cnpj;
 
+    @JsonIgnore
     @Column(name = "email" ,nullable = false, unique = true, length = 150)
     private String email;
 

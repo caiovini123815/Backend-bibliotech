@@ -1,6 +1,7 @@
 package com.altis.library.users.services;
 
 import com.altis.library.auth.models.dtos.ForgotPasswordRequestDTO;
+import com.altis.library.auth.models.dtos.RegisterRequestDTO;
 import com.altis.library.auth.models.dtos.ResetPasswordRequestDTO;
 import com.altis.library.auth.models.dtos.ResetPasswordResponseDTO;
 import com.altis.library.users.models.dtos.UsersRequestDTO;
@@ -8,10 +9,11 @@ import com.altis.library.users.models.dtos.UsersResponseDTO;
 import com.altis.library.users.models.entities.users;
 import com.altis.library.users.repositories.UsersRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class UsersService {
@@ -80,8 +82,21 @@ public class UsersService {
     }
 
     @Transactional
-    public List<users> findAll() {
-        return usersRepository.findAll();
+    public Page<UsersResponseDTO> findAll(Pageable pageable) {
+
+        return usersRepository
+                .findAll(pageable)
+                .map(user -> new UsersResponseDTO(
+                        user.getId(),
+                        user.getNameFull(),
+                        user.getPhone(),
+                        user.getBirthDate(),
+                        user.getAddress(),
+                        user.getIsAdmin(),
+                        user.getIsDisable(),
+                        user.getCreateDt(),
+                        user.getUpdateDt()
+                ));
     }
 
     @Transactional
@@ -98,7 +113,6 @@ public class UsersService {
 
         user.setNameFull(userData.getNameFull());
         user.setPhone(userData.getPhone());
-        user.setBirthDate(userData.getBirthDate());
         user.setAddress(userData.getAddress());
         user.setIsAdmin(userData.getIsAdmin());
         user.setIsDisable(userData.getIsDisable());
@@ -129,10 +143,6 @@ public class UsersService {
 
         if (userData.getIsAdmin() != null) {
             user.setIsAdmin(userData.getIsAdmin());
-        }
-
-        if (userData.getIsDisable() != null) {
-            user.setIsDisable(userData.getIsDisable());
         }
 
         return usersRepository.save(user);
@@ -180,10 +190,116 @@ public class UsersService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public UsersResponseDTO findByIdResponse(Long id) {
 
         users user = findById(id);
 
-        usersRepository.delete(user);
+        return new UsersResponseDTO(
+                user.getId(),
+                user.getNameFull(),
+                user.getPhone(),
+                user.getBirthDate(),
+                user.getAddress(),
+                user.getIsAdmin(),
+                user.getIsDisable(),
+                user.getCreateDt(),
+                user.getUpdateDt()
+        );
     }
+
+    @Transactional
+    public UsersResponseDTO register(RegisterRequestDTO userData) {
+
+        if (usersRepository.existsByEmail(userData.email())) {
+            throw new RuntimeException("Email already registered");
+        }
+
+        if (usersRepository.existsByCpf(userData.cpf())) {
+            throw new RuntimeException("CPF already registered");
+        }
+
+        users user = new users();
+
+        user.setNameFull(userData.nameFull());
+        user.setEmail(userData.email());
+        user.setCpf(userData.cpf());
+        user.setPhone(userData.phone());
+        user.setBirthDate(userData.birthDate());
+        user.setAddress(userData.address());
+
+        user.setPassword(
+                passwordEncoder.encode(userData.password())
+        );
+
+        user.setIsAdmin(false);
+        user.setIsDisable(false);
+
+        users savedUser = usersRepository.save(user);
+
+        return new UsersResponseDTO(
+                savedUser.getId(),
+                savedUser.getNameFull(),
+                savedUser.getPhone(),
+                savedUser.getBirthDate(),
+                savedUser.getAddress(),
+                savedUser.getIsAdmin(),
+                savedUser.getIsDisable(),
+                savedUser.getCreateDt(),
+                savedUser.getUpdateDt()
+        );
+    }
+
+
+    @Transactional
+    public UsersResponseDTO disableUser(Long id) {
+
+        users user = findById(id);
+
+        if (Boolean.TRUE.equals(user.getIsDisable())) {
+            throw new RuntimeException("User is already disabled");
+        }
+
+        user.setIsDisable(true);
+
+        users savedUser = usersRepository.save(user);
+
+        return new UsersResponseDTO(
+                savedUser.getId(),
+                savedUser.getNameFull(),
+                savedUser.getPhone(),
+                savedUser.getBirthDate(),
+                savedUser.getAddress(),
+                savedUser.getIsAdmin(),
+                savedUser.getIsDisable(),
+                savedUser.getCreateDt(),
+                savedUser.getUpdateDt()
+        );
+    }
+
+    @Transactional
+    public UsersResponseDTO enableUser(Long id) {
+
+        users user = findById(id);
+
+        if (Boolean.FALSE.equals(user.getIsDisable())) {
+            throw new RuntimeException("User is already enabled");
+        }
+
+        user.setIsDisable(false);
+
+        users savedUser = usersRepository.save(user);
+
+        return new UsersResponseDTO(
+                savedUser.getId(),
+                savedUser.getNameFull(),
+                savedUser.getPhone(),
+                savedUser.getBirthDate(),
+                savedUser.getAddress(),
+                savedUser.getIsAdmin(),
+                savedUser.getIsDisable(),
+                savedUser.getCreateDt(),
+                savedUser.getUpdateDt()
+        );
+    }
+
 }

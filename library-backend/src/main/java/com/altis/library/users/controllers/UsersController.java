@@ -5,12 +5,12 @@ import com.altis.library.users.models.dtos.UsersResponseDTO;
 import com.altis.library.users.models.entities.users;
 import com.altis.library.users.services.UsersService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -40,15 +40,23 @@ public class UsersController {
     }
 
     @GetMapping
-    public ResponseEntity<List<users>> findAll() {
+    public ResponseEntity<Page<UsersResponseDTO>> findAll(
+            Pageable pageable
+    ) {
 
-        return ResponseEntity.ok(usersService.findAll());
+        return ResponseEntity.ok(
+                usersService.findAll(pageable)
+        );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<users> findById(@PathVariable Long id) {
+    public ResponseEntity<UsersResponseDTO> findById(
+            @PathVariable Long id
+    ) {
 
-        return ResponseEntity.ok(usersService.findById(id));
+        return ResponseEntity.ok(
+                usersService.findByIdResponse(id)
+        );
     }
 
     @PutMapping("/{id}")
@@ -73,11 +81,25 @@ public class UsersController {
         );
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    @PatchMapping("/{id}/disable")
+    public ResponseEntity<UsersResponseDTO> disableUser(
+            @PathVariable Long id
+    ) {
 
-        usersService.delete(id);
-
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                usersService.disableUser(id)
+        );
     }
+
+    @PatchMapping("/{id}/enable")
+    public ResponseEntity<UsersResponseDTO> enableUser(
+            @PathVariable Long id
+    ) {
+
+        return ResponseEntity.ok(
+                usersService.enableUser(id)
+        );
+    }
+
+
 }

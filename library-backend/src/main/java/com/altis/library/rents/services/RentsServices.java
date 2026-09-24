@@ -9,11 +9,11 @@ import com.altis.library.rents.models.entities.rents;
 import com.altis.library.rents.repositories.RentsRepository;
 import com.altis.library.users.models.entities.users;
 import com.altis.library.users.repositories.UsersRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class RentsServices {
@@ -80,8 +80,8 @@ public class RentsServices {
     }
 
     @Transactional(readOnly = true)
-    public List<rents> findAll() {
-        return rentsRepository.findAll();
+    public Page<rents> findAll(Pageable pageable) {
+        return rentsRepository.findAll(pageable);
     }
 
     @Transactional(readOnly = true)
@@ -90,8 +90,7 @@ public class RentsServices {
         return rentsRepository
                 .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Rent not found")
-                );
+                        new RuntimeException("Rent not found"));
     }
 
     @Transactional
@@ -187,6 +186,19 @@ public class RentsServices {
                 savedRent.getStatus(),
                 savedRent.getCreateDt(),
                 savedRent.getUpdateDt()
+        );
+    }
+
+
+    @Transactional(readOnly = true)
+    public Page<rents> findMyRents(
+            Long userId,
+            Pageable pageable
+    ) {
+
+        return rentsRepository.findByUserId(
+                userId,
+                pageable
         );
     }
 
