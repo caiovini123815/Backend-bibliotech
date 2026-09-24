@@ -3,13 +3,16 @@ package com.altis.library.rents.services;
 import com.altis.library.books.models.entities.books;
 import com.altis.library.books.repositories.BooksRepository;
 import com.altis.library.rents.models.dtos.RentsRequestDTO;
+import com.altis.library.rents.models.dtos.RentsResponseDTO;
 import com.altis.library.rents.models.dtos.UpdateRequestDTO;
 import com.altis.library.rents.models.entities.rents;
 import com.altis.library.rents.repositories.RentsRepository;
 import com.altis.library.users.models.entities.users;
 import com.altis.library.users.repositories.UsersRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -29,7 +32,8 @@ public class RentsServices {
         this.booksRepository = booksRepository;
     }
 
-    public rents create(RentsRequestDTO rentData) {
+    @Transactional
+    public RentsResponseDTO create(RentsRequestDTO rentData) {
 
         users user = usersRepository
                 .findById(rentData.userId())
@@ -43,22 +47,44 @@ public class RentsServices {
                         new RuntimeException("Book not found")
                 );
 
-        rents rent = new rents();
+        if (book.getQuantity() <= 0) {
+            throw new RuntimeException("Book out of stock");
+        }
 
+        LocalDate rentDate = LocalDate.now();
+        rents rent = new rents();
         rent.setUser(user);
         rent.setBook(book);
-        rent.setRentDate(rentData.rentDate());
-        rent.setReturnPeriod(rentData.returnPeriod());
-        rent.setReturnDate(rentData.returnDate());
-        rent.setStatus(rentData.status());
+        rent.setRentDate(rentDate);
+        rent.setReturnPeriod(null);
+        rent.setReturnDate(rentDate.plusDays(14));
+        rent.setStatus("RENTED");
 
-        return rentsRepository.save(rent);
+        book.setQuantity(book.getQuantity() - 1);
+
+        booksRepository.save(book);
+
+        rents savedRent = rentsRepository.save(rent);
+
+        return new RentsResponseDTO(
+                savedRent.getId(),
+                savedRent.getUser(),
+                savedRent.getBook(),
+                savedRent.getRentDate(),
+                savedRent.getReturnPeriod(),
+                savedRent.getReturnDate(),
+                savedRent.getStatus(),
+                savedRent.getCreateDt(),
+                savedRent.getUpdateDt()
+        );
     }
 
+    @Transactional(readOnly = true)
     public List<rents> findAll() {
         return rentsRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public rents findById(Long id) {
 
         return rentsRepository
@@ -68,6 +94,7 @@ public class RentsServices {
                 );
     }
 
+    @Transactional
     public rents update(Long id, RentsRequestDTO rentData) {
 
         rents rent = rentsRepository
@@ -90,14 +117,11 @@ public class RentsServices {
 
         rent.setUser(user);
         rent.setBook(book);
-        rent.setRentDate(rentData.rentDate());
-        rent.setReturnPeriod(rentData.returnPeriod());
-        rent.setReturnDate(rentData.returnDate());
-        rent.setStatus(rentData.status());
 
         return rentsRepository.save(rent);
     }
 
+    @Transactional
     public rents partialUpdate(Long id, UpdateRequestDTO rentData) {
 
         rents rent = rentsRepository
@@ -128,25 +152,45 @@ public class RentsServices {
             rent.setBook(book);
         }
 
-        if (rentData.rentDate() != null) {
-            rent.setRentDate(rentData.rentDate());
-        }
 
-        if (rentData.returnPeriod() != null) {
-            rent.setReturnPeriod(rentData.returnPeriod());
-        }
-
-        if (rentData.returnDate() != null) {
-            rent.setReturnDate(rentData.returnDate());
-        }
-
-        if (rentData.status() != null) {
-            rent.setStatus(rentData.status());
-        }
 
         return rentsRepository.save(rent);
     }
 
+    @Transactional
+    public RentsResponseDTO returnBook(Long id) {
+
+        rents rent = rentsRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Rent not found")
+                );
+
+        if ("RETURNED".equals(rent.getStatus())) {
+            throw new RuntimeException("Book already returned");
+        }
+
+        books book = rent.getBook();
+        rent.setReturnPeriod(LocalDate.now());
+        rent.setStatus("RETURNED");
+        book.setQuantity(book.getQuantity() + 1);
+        booksRepository.save(book);
+        rents savedRent = rentsRepository.save(rent);
+
+        return new RentsResponseDTO(
+                savedRent.getId(),
+                savedRent.getUser(),
+                savedRent.getBook(),
+                savedRent.getRentDate(),
+                savedRent.getReturnPeriod(),
+                savedRent.getReturnDate(),
+                savedRent.getStatus(),
+                savedRent.getCreateDt(),
+                savedRent.getUpdateDt()
+        );
+    }
+
+    @Transactional
     public void delete(Long id) {
 
         rents rent = rentsRepository
@@ -154,6 +198,12 @@ public class RentsServices {
                 .orElseThrow(() ->
                         new RuntimeException("Rent not found")
                 );
+
+        if (!"RETURNED".equals(rent.getStatus())) {
+            throw new RuntimeException(
+                    "Rent cannot be deleted because the book has not been returned"
+            );
+        }
 
         rentsRepository.delete(rent);
     }

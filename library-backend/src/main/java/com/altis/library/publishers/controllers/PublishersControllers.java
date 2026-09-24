@@ -1,10 +1,15 @@
 package com.altis.library.publishers.controllers;
 
+import com.altis.library.publishers.models.dtos.PublishersRequestDTO;
+import com.altis.library.publishers.models.dtos.PublishersResponseDTO;
 import com.altis.library.publishers.models.entities.publishers;
 import com.altis.library.publishers.services.PublishersServices;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,11 +23,21 @@ public class PublishersControllers {
     }
 
     @PostMapping
-    public ResponseEntity<publishers> create(@RequestBody publishers publisher) {
+    public ResponseEntity<PublishersResponseDTO> create(
+            @Valid @RequestBody PublishersRequestDTO publisherData) {
 
-        publishers createdPublisher = publishersServices.create(publisher);
+        PublishersResponseDTO createdPublisher =
+                publishersServices.create(publisherData);
 
-        return ResponseEntity.ok(createdPublisher);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdPublisher.id())
+                .toUri();
+
+        return ResponseEntity
+                .created(uri)
+                .body(createdPublisher);
     }
 
     @GetMapping

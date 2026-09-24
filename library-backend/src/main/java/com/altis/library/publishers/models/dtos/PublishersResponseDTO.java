@@ -4,10 +4,8 @@ import java.time.LocalDateTime;
 
 public record PublishersResponseDTO(
         Long id,
-        String name_publisher,
-        String cnpj,
-        String email,
-        String phone_publisher,
+        String namePublisher,
+        String phonePublisher,
         String website,
         LocalDateTime createDt,
         LocalDateTime updateDt

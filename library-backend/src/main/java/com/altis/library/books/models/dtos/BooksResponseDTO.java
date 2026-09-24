@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 public record BooksResponseDTO(
         Long id,
         String title,
-        String isbn,
         LocalDate publicationDate,
         String genre,
         Integer numberPages,

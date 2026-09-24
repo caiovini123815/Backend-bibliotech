@@ -35,6 +35,9 @@ public class SecurityConfig {
 
                         .requestMatchers("/login").permitAll()
 
+                        .requestMatchers(HttpMethod.POST, "/forgot-password").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/reset-password").permitAll()
+
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
@@ -72,6 +75,19 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/rents/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/rents/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/rents/**").hasRole("ADMIN")
+
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/dashboard/admin"
+                        ).hasRole("ADMIN")
+
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/dashboard/user"
+                        ).authenticated()
+
 
                         .anyRequest().authenticated()
 

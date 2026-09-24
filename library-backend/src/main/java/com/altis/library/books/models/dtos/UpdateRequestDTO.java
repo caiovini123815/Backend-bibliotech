@@ -15,11 +15,6 @@ public record UpdateRequestDTO(
         )String title,
 
 
-        @Schema(
-                description = "Publication date in YYYY-MM-DD format",
-                example = "2026-09-20"
-        )LocalDate publicationDate,
-
         @NotNull(message = "This field is required, please enter the genre!")
         @Size(min = 3,max = 100, message = "The genre must be between 3 and 100 characters long, please follow the rules!")
         @Pattern(

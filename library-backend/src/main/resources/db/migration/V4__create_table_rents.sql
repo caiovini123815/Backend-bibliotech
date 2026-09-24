@@ -3,7 +3,7 @@ CREATE TABLE rents(
         user_id BIGINT NOT NULL,
         book_id BIGINT NOT NULL,
         rent_date DATE NOT NULL,
-        return_period DATE NOT NULL,
+        return_period DATE,
         return_date DATE NOT NULL,
         status VARCHAR(50) NOT NULL,
         create_dt TIMESTAMP NOT NULL,

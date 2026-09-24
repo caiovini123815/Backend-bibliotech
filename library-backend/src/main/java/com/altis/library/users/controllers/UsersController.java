@@ -1,10 +1,15 @@
 package com.altis.library.users.controllers;
 
+import com.altis.library.users.models.dtos.UsersRequestDTO;
+import com.altis.library.users.models.dtos.UsersResponseDTO;
 import com.altis.library.users.models.entities.users;
 import com.altis.library.users.services.UsersService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,11 +23,20 @@ public class UsersController {
     }
 
     @PostMapping
-    public ResponseEntity<users> create(@RequestBody users user) {
+    public ResponseEntity<UsersResponseDTO> create(
+            @Valid @RequestBody UsersRequestDTO userData) {
 
-        users createdUser = usersService.create(user);
+        UsersResponseDTO createdUser = usersService.create(userData);
 
-        return ResponseEntity.ok(createdUser);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdUser.id())
+                .toUri();
+
+        return ResponseEntity
+                .created(uri)
+                .body(createdUser);
     }
 
     @GetMapping

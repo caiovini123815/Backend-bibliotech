@@ -11,7 +11,7 @@ public record PublishersRequestDTO(
         @Pattern(
                 regexp = "^[a-zA-ZáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ\\s]+$",
                 message = "The name must contain only uppercase or lowercase letters, including accents and spaces!"
-        )String name_publisher,
+        )String namePublisher,
 
         @NotBlank(message = "This field is required, please enter your cnpj!")
         @Size(min = 14,max = 14, message = "The cnpj must be between 14 digits long, please follow the rules!")
@@ -31,7 +31,7 @@ public record PublishersRequestDTO(
         @Pattern(
                 regexp = "^\\(\\d{2}\\)\\s\\d{4,5}-\\d{4}$",
                 message = "The phone number must be in the format (00) 00000-0000!"
-        )String phone_publisher,
+        )String phonePublisher,
 
         @NotBlank(message = "This field is required, please enter your website!")
         @Size(min = 20,max = 150,message = "Your website must contain 20 and 150 characterslong, please follow the rules!")

@@ -35,7 +35,7 @@ public class rents {
     @Column(name = "rent_date", nullable = false)
     private LocalDate rentDate;
 
-    @Column(name = "return_period", nullable = false)
+    @Column(name = "return_period")
     private LocalDate returnPeriod;
 
     @Column(name = "return_date", nullable = false)

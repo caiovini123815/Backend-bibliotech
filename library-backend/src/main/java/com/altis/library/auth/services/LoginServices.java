@@ -4,6 +4,7 @@ import com.altis.library.auth.models.dtos.LoginRequestDTO;
 import com.altis.library.auth.models.dtos.LoginResponseDTO;
 import com.altis.library.users.models.entities.users;
 import com.altis.library.users.repositories.UsersRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class LoginServices {
 
     }
 
+    @Transactional
     public LoginResponseDTO login(LoginRequestDTO loginData) {
 
         users user = usersRepository
@@ -43,10 +45,6 @@ public class LoginServices {
         String token = tokenServices.generateToken(user);
 
         return new LoginResponseDTO(
-                user.getId(),
-                user.getNameFull(),
-                user.getEmail(),
-                user.getIsAdmin(),
                 token
         );
     }

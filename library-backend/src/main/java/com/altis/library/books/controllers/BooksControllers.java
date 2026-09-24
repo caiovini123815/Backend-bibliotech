@@ -1,13 +1,19 @@
 package com.altis.library.books.controllers;
 
+import com.altis.library.books.models.dtos.BooksResponseDTO;
 import com.altis.library.books.services.BooksServices;
 import com.altis.library.books.models.dtos.BooksRequestDTO;
 import com.altis.library.books.models.dtos.UpdateRequestDTO;
 import com.altis.library.books.models.entities.books;
-import org.springframework.http.HttpStatus;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+
 
 @RestController
 @RequestMapping("/books")
@@ -20,14 +26,26 @@ public class BooksControllers {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public books create(@RequestBody BooksRequestDTO bookData) {
-        return booksServices.create(bookData);
+    public ResponseEntity<BooksResponseDTO> create(
+            @Valid @RequestBody BooksRequestDTO bookData) {
+
+        BooksResponseDTO createdBook =
+                booksServices.create(bookData);
+
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdBook.id())
+                .toUri();
+
+        return ResponseEntity
+                .created(uri)
+                .body(createdBook);
     }
 
     @GetMapping
-    public List<books> findAll() {
-        return booksServices.findAll();
+    public Page<books> findAll(Pageable pageable) {
+        return booksServices.findAll(pageable);
     }
 
     @GetMapping("/{id}")

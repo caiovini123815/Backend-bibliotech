@@ -12,3 +12,17 @@ CREATE TABLE users (
     create_dt TIMESTAMP NOT NULL,
     update_dt TIMESTAMP NOT NULL
 );
+VALUES (
+    'Admin Supremo',
+    'adminsup@gmail.com',
+    '100.090.377-00',
+    '(85) 90003-8000',
+    '2002-09-06',
+    'Rua Manoel Satiro, 221 - Fortaleza',
+    '$2a$10$UxNzYikYhFGTaTUoDVPEeudyHlQqJZimg.NX7MBc0cO4payoAEODO',
+    true,
+    false,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+
+)

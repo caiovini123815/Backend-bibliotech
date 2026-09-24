@@ -7,7 +7,6 @@ public record UpdateResponseDTO(
 
         Long id,
         String title,
-        String isbn,
         LocalDate publicationDate,
         String genre,
         Integer numberPages,

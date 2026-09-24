@@ -21,12 +21,6 @@ public record BooksRequestDTO(
                 message = "The isbn number mus e in the format ex: 9789875342536 or 9799875342536"
         )String isbn,
 
-        @NotNull
-        @Schema(
-                description = "Publication date in YYYY-MM-DD format",
-                example = "2026-09-20"
-        )LocalDate publicationDate,
-
         @NotNull(message = "This field is required, please enter the genre!")
         @Size(min = 3,max = 100, message = "The genre must be between 3 and 100 characters long, please follow the rules!")
         @Pattern(

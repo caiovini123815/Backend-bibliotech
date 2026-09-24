@@ -1,13 +1,16 @@
 package com.altis.library.rents.controllers;
 
 import com.altis.library.rents.models.dtos.RentsRequestDTO;
+import com.altis.library.rents.models.dtos.RentsResponseDTO;
 import com.altis.library.rents.models.dtos.UpdateRequestDTO;
 import com.altis.library.rents.models.entities.rents;
 import com.altis.library.rents.services.RentsServices;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,12 +24,21 @@ public class RentsControllers {
     }
 
     @PostMapping
-    public ResponseEntity<rents> create(
-            @RequestBody @Valid RentsRequestDTO rentData
-    ) {
-        rents createdRent = rentsServices.create(rentData);
+    public ResponseEntity<RentsResponseDTO> create(
+            @Valid @RequestBody RentsRequestDTO rentData) {
 
-        return ResponseEntity.ok(createdRent);
+        RentsResponseDTO createdRent =
+                rentsServices.create(rentData);
+
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdRent.id())
+                .toUri();
+
+        return ResponseEntity
+                .created(uri)
+                .body(createdRent);
     }
 
     @GetMapping
@@ -56,6 +68,15 @@ public class RentsControllers {
     ) {
         return ResponseEntity.ok(
                 rentsServices.partialUpdate(id, rentData)
+        );
+    }
+
+    @PatchMapping("/{id}/return")
+    public ResponseEntity<RentsResponseDTO> returnPeriod(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(
+                rentsServices.returnBook(id)
         );
     }
 
