@@ -1,8 +1,7 @@
-package com.altis.library.users.models.dtos;
+package com.altis.library.publishers.models.dtos;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
 
 public record UpdateRequestDTO(
 
@@ -10,19 +9,18 @@ public record UpdateRequestDTO(
         @Pattern(
                 regexp = "^[a-zA-ZáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ\\s]+$",
                 message = "The name must contain only uppercase or lowercase letters, including accents and spaces!"
-        )String name_full,
+        )String namePublisher,
 
         @Size(min = 14,max = 15,message = "Your phone number must contain 14 and 15 digits long, please enter your phone number correctly!")
         @Pattern(
                 regexp = "^\\(\\d{2}\\)\\s\\d{4,5}-\\d{4}$",
                 message = "The phone number must be in the format (00) 00000-0000!"
-        )String phone,
+        )String phonePublisher,
 
-
-        @Size(min = 10,max = 150,message = "Your address must contain 10 and 150 characters long, please enter your address correctly!")
+        @Size(min = 20,max = 150,message = "Your website must contain 20 and 150 characterslong, please follow the rules!")
         @Pattern(
-                regexp = "^[a-zA-ZáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ\\s]+,\\s\\d+\\s-\\s[a-zA-ZáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ\\s]+$",
-                message = "The address must be in the format: Street Name, Number - City Name!"
-        )String address
+                regexp = "^https?://(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)+(/.*)?$",
+                message = "The website must be in the format ex: https://www.editora.com.br!"
+        )String website
 
 ) {}

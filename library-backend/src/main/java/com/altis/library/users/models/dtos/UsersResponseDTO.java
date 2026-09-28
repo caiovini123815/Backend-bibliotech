@@ -6,13 +6,11 @@ import java.time.LocalDateTime;
 public record UsersResponseDTO(
         Long id,
         String nameFull,
-        String email,
-        String cpf,
         String phone,
         LocalDate dateBirth,
         String address,
-        String isAdmin,
-        String isDisable,
+        Boolean isAdmin,
+        Boolean isDisable,
         LocalDateTime createDt,
         LocalDateTime updateDt
 

@@ -1,4 +1,5 @@
 package com.altis.library.users.models.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,32 +23,36 @@ public class users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_full" ,nullable = false, length = 50)
+    @Column(name = "name_full" ,nullable = false, length = 100)
     private String nameFull;
 
+    @JsonIgnore
     @Column(name = "email" ,nullable = false, unique = true, length = 150)
     private String email;
 
-    @Column(name = "cpf" ,nullable = false, unique = true, length = 11)
+    @JsonIgnore
+    @Column(name = "cpf" ,nullable = false, unique = true, length = 15)
     private String cpf;
 
     @Column(name = "phone" ,nullable = false, length = 15)
     private String phone;
 
-    @Column(name = "birth_date" ,unique = true, nullable = false)
+    @JsonIgnore
+    @Column(name = "birth_date" , nullable = false)
     private LocalDate birthDate;
 
     @Column(name = "address" ,nullable = false)
     private String address;
 
+    @JsonIgnore
     @Column(name = "password" ,nullable = false)
     private String password;
 
     @Column(name = "is_admin" ,nullable = false)
-    private String isAdmin;
+    private Boolean isAdmin;
 
     @Column(name = "is_disable" ,nullable = false)
-    private String isDisable;
+    private Boolean isDisable;
 
     @CreatedDate
     @Column(name = "create_dt", nullable = false, updatable = false)
