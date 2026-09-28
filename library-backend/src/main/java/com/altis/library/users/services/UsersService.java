@@ -1,5 +1,8 @@
 package com.altis.library.users.services;
 
+import com.altis.library.exceptions.BusinessException;
+import com.altis.library.exceptions.ConflictException;
+import com.altis.library.exceptions.ResourceNotFoundException;
 import com.altis.library.auth.models.dtos.ForgotPasswordRequestDTO;
 import com.altis.library.auth.models.dtos.RegisterRequestDTO;
 import com.altis.library.auth.models.dtos.ResetPasswordRequestDTO;
@@ -47,11 +50,11 @@ public class UsersService {
     public UsersResponseDTO create(UsersRequestDTO userData) {
 
         if (usersRepository.existsByEmail(userData.email())) {
-            throw new RuntimeException("Email already registered");
+            throw new ConflictException("Email already registered");
         }
 
         if (usersRepository.existsByCpf(userData.cpf())) {
-            throw new RuntimeException("CPF already registered");
+            throw new ConflictException("CPF already registered");
         }
 
         users user = new users();
@@ -101,9 +104,13 @@ public class UsersService {
 
     @Transactional
     public users findById(Long id) {
+
         return usersRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+                        new ResourceNotFoundException(
+                                "User not found with id: " + id
+                        )
+                );
     }
 
     @Transactional
@@ -153,15 +160,13 @@ public class UsersService {
     ) {
 
         if (recoveryUserId == null) {
-            throw new RuntimeException(
+            throw new BusinessException(
                     "User confirmation is required"
             );
         }
 
-        if (!data.newPassword()
-                .equals(data.repeatPassword())) {
-
-            throw new RuntimeException(
+        if (!data.newPassword().equals(data.repeatPassword())) {
+            throw new BusinessException(
                     "Passwords do not match"
             );
         }
@@ -169,7 +174,7 @@ public class UsersService {
         users user = usersRepository
                 .findById(recoveryUserId)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "User not found"
                         )
                 );
@@ -211,11 +216,11 @@ public class UsersService {
     public UsersResponseDTO register(RegisterRequestDTO userData) {
 
         if (usersRepository.existsByEmail(userData.email())) {
-            throw new RuntimeException("Email already registered");
+            throw new ConflictException("Email already registered");
         }
 
         if (usersRepository.existsByCpf(userData.cpf())) {
-            throw new RuntimeException("CPF already registered");
+            throw new ConflictException("CPF already registered");
         }
 
         users user = new users();
@@ -256,7 +261,9 @@ public class UsersService {
         users user = findById(id);
 
         if (Boolean.TRUE.equals(user.getIsDisable())) {
-            throw new RuntimeException("User is already disabled");
+            throw new BusinessException(
+                    "User is already disabled"
+            );
         }
 
         user.setIsDisable(true);
@@ -282,7 +289,9 @@ public class UsersService {
         users user = findById(id);
 
         if (Boolean.FALSE.equals(user.getIsDisable())) {
-            throw new RuntimeException("User is already enabled");
+            throw new BusinessException(
+                    "User is already enabled"
+            );
         }
 
         user.setIsDisable(false);

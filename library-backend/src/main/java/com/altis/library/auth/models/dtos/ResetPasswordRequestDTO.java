@@ -1,10 +1,18 @@
 package com.altis.library.auth.models.dtos;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record ResetPasswordRequestDTO(
+
+        @NotBlank(message = "Email is required")
+        @Email(message = "Invalid email")
+        String email,
+
+        @NotBlank(message = "CPF is required")
+        String cpf,
 
         @NotBlank(message = "The password is required, please enter your password!")
         @Size(min = 8, max = 72, message = "The password must be between 5 and 30 characters long, please follow the rules!")

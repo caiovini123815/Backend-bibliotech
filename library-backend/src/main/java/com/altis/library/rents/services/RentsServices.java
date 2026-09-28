@@ -2,6 +2,8 @@ package com.altis.library.rents.services;
 
 import com.altis.library.books.models.entities.books;
 import com.altis.library.books.repositories.BooksRepository;
+import com.altis.library.exceptions.BusinessException;
+import com.altis.library.exceptions.ResourceNotFoundException;
 import com.altis.library.rents.models.dtos.RentsRequestDTO;
 import com.altis.library.rents.models.dtos.RentsResponseDTO;
 import com.altis.library.rents.models.dtos.UpdateRequestDTO;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 
 @Service
@@ -38,21 +41,29 @@ public class RentsServices {
         users user = usersRepository
                 .findById(rentData.userId())
                 .orElseThrow(() ->
-                        new RuntimeException("User not found")
+                        new ResourceNotFoundException(
+                                "User not found with id: " + rentData.userId()
+                        )
                 );
 
         books book = booksRepository
                 .findById(rentData.bookId())
                 .orElseThrow(() ->
-                        new RuntimeException("Book not found")
+                        new ResourceNotFoundException(
+                                "Book not found with id: " + rentData.bookId()
+                        )
                 );
 
         if (book.getQuantity() <= 0) {
-            throw new RuntimeException("Book out of stock");
+            throw new BusinessException(
+                    "Book out of stock"
+            );
         }
 
         LocalDate rentDate = LocalDate.now();
+
         rents rent = new rents();
+
         rent.setUser(user);
         rent.setBook(book);
         rent.setRentDate(rentDate);
@@ -81,6 +92,7 @@ public class RentsServices {
 
     @Transactional(readOnly = true)
     public Page<rents> findAll(Pageable pageable) {
+
         return rentsRepository.findAll(pageable);
     }
 
@@ -90,7 +102,10 @@ public class RentsServices {
         return rentsRepository
                 .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Rent not found"));
+                        new ResourceNotFoundException(
+                                "Rent not found with id: " + id
+                        )
+                );
     }
 
     @Transactional
@@ -99,19 +114,25 @@ public class RentsServices {
         rents rent = rentsRepository
                 .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Rent not found")
+                        new ResourceNotFoundException(
+                                "Rent not found with id: " + id
+                        )
                 );
 
         users user = usersRepository
                 .findById(rentData.userId())
                 .orElseThrow(() ->
-                        new RuntimeException("User not found")
+                        new ResourceNotFoundException(
+                                "User not found with id: " + rentData.userId()
+                        )
                 );
 
         books book = booksRepository
                 .findById(rentData.bookId())
                 .orElseThrow(() ->
-                        new RuntimeException("Book not found")
+                        new ResourceNotFoundException(
+                                "Book not found with id: " + rentData.bookId()
+                        )
                 );
 
         rent.setUser(user);
@@ -121,12 +142,17 @@ public class RentsServices {
     }
 
     @Transactional
-    public rents partialUpdate(Long id, UpdateRequestDTO rentData) {
+    public rents partialUpdate(
+            Long id,
+            UpdateRequestDTO rentData
+    ) {
 
         rents rent = rentsRepository
                 .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Rent not found")
+                        new ResourceNotFoundException(
+                                "Rent not found with id: " + id
+                        )
                 );
 
         if (rentData.userId() != null) {
@@ -134,7 +160,10 @@ public class RentsServices {
             users user = usersRepository
                     .findById(rentData.userId())
                     .orElseThrow(() ->
-                            new RuntimeException("User not found")
+                            new ResourceNotFoundException(
+                                    "User not found with id: "
+                                            + rentData.userId()
+                            )
                     );
 
             rent.setUser(user);
@@ -145,13 +174,14 @@ public class RentsServices {
             books book = booksRepository
                     .findById(rentData.bookId())
                     .orElseThrow(() ->
-                            new RuntimeException("Book not found")
+                            new ResourceNotFoundException(
+                                    "Book not found with id: "
+                                            + rentData.bookId()
+                            )
                     );
 
             rent.setBook(book);
         }
-
-
 
         return rentsRepository.save(rent);
     }
@@ -162,18 +192,28 @@ public class RentsServices {
         rents rent = rentsRepository
                 .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Rent not found")
+                        new ResourceNotFoundException(
+                                "Rent not found with id: " + id
+                        )
                 );
 
         if ("RETURNED".equals(rent.getStatus())) {
-            throw new RuntimeException("Book already returned");
+            throw new BusinessException(
+                    "Book already returned"
+            );
         }
 
         books book = rent.getBook();
+
         rent.setReturnPeriod(LocalDate.now());
         rent.setStatus("RETURNED");
-        book.setQuantity(book.getQuantity() + 1);
+
+        book.setQuantity(
+                book.getQuantity() + 1
+        );
+
         booksRepository.save(book);
+
         rents savedRent = rentsRepository.save(rent);
 
         return new RentsResponseDTO(
@@ -188,7 +228,6 @@ public class RentsServices {
                 savedRent.getUpdateDt()
         );
     }
-
 
     @Transactional(readOnly = true)
     public Page<rents> findMyRents(
@@ -208,11 +247,13 @@ public class RentsServices {
         rents rent = rentsRepository
                 .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Rent not found")
+                        new ResourceNotFoundException(
+                                "Rent not found with id: " + id
+                        )
                 );
 
         if (!"RETURNED".equals(rent.getStatus())) {
-            throw new RuntimeException(
+            throw new BusinessException(
                     "Rent cannot be deleted because the book has not been returned"
             );
         }

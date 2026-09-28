@@ -1,6 +1,8 @@
 package com.altis.library.publishers.services;
 
 import com.altis.library.books.repositories.BooksRepository;
+import com.altis.library.exceptions.ConflictException;
+import com.altis.library.exceptions.ResourceNotFoundException;
 import com.altis.library.publishers.models.dtos.PublishersRequestDTO;
 import com.altis.library.publishers.models.dtos.PublishersResponseDTO;
 import com.altis.library.publishers.models.entities.publishers;
@@ -9,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 
 @Service
 public class PublishersServices {
@@ -28,23 +28,42 @@ public class PublishersServices {
 
     @Transactional
     public PublishersResponseDTO create(
-            PublishersRequestDTO publisherData) {
+            PublishersRequestDTO publisherData
+    ) {
 
         if (publishersRepository.existsByEmail(publisherData.email())) {
-            throw new RuntimeException("Email already registered");
+            throw new ConflictException(
+                    "Email already registered"
+            );
         }
 
         if (publishersRepository.existsByCnpj(publisherData.cnpj())) {
-            throw new RuntimeException("CNPJ already registered");
+            throw new ConflictException(
+                    "CNPJ already registered"
+            );
         }
 
         publishers publisher = new publishers();
 
-        publisher.setNamePublisher(publisherData.namePublisher());
-        publisher.setCnpj(publisherData.cnpj());
-        publisher.setEmail(publisherData.email());
-        publisher.setPhonePublisher(publisherData.phonePublisher());
-        publisher.setWebsite(publisherData.website());
+        publisher.setNamePublisher(
+                publisherData.namePublisher()
+        );
+
+        publisher.setCnpj(
+                publisherData.cnpj()
+        );
+
+        publisher.setEmail(
+                publisherData.email()
+        );
+
+        publisher.setPhonePublisher(
+                publisherData.phonePublisher()
+        );
+
+        publisher.setWebsite(
+                publisherData.website()
+        );
 
         publishers savedPublisher =
                 publishersRepository.save(publisher);
@@ -59,59 +78,93 @@ public class PublishersServices {
         );
     }
 
+
     @Transactional(readOnly = true)
-    public Page<PublishersResponseDTO> findAll(Pageable pageable) {
+    public Page<PublishersResponseDTO> findAll(
+            Pageable pageable
+    ) {
 
         return publishersRepository
                 .findAll(pageable)
-                .map(publisher -> new PublishersResponseDTO(
-                        publisher.getId(),
-                        publisher.getNamePublisher(),
-                        publisher.getPhonePublisher(),
-                        publisher.getWebsite(),
-                        publisher.getCreateDt(),
-                        publisher.getUpdateDt()
-                ));
+                .map(publisher ->
+                        new PublishersResponseDTO(
+                                publisher.getId(),
+                                publisher.getNamePublisher(),
+                                publisher.getPhonePublisher(),
+                                publisher.getWebsite(),
+                                publisher.getCreateDt(),
+                                publisher.getUpdateDt()
+                        )
+                );
     }
+
 
     @Transactional(readOnly = true)
     public publishers findById(Long id) {
-        return publishersRepository.findById(id)
+
+        return publishersRepository
+                .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Publisher not found"));
+                        new ResourceNotFoundException(
+                                "Publisher not found with id: " + id
+                        )
+                );
     }
 
+
     @Transactional
-    public publishers update(Long id, publishers publisherData) {
+    public publishers update(
+            Long id,
+            publishers publisherData
+    ) {
 
         publishers publisher = findById(id);
 
-        publisher.setNamePublisher(publisherData.getNamePublisher());
-        publisher.setPhonePublisher(publisherData.getPhonePublisher());
-        publisher.setWebsite(publisherData.getWebsite());
+        publisher.setNamePublisher(
+                publisherData.getNamePublisher()
+        );
+
+        publisher.setPhonePublisher(
+                publisherData.getPhonePublisher()
+        );
+
+        publisher.setWebsite(
+                publisherData.getWebsite()
+        );
 
         return publishersRepository.save(publisher);
     }
 
+
     @Transactional
-    public publishers partialUpdate(Long id, publishers publisherData) {
+    public publishers partialUpdate(
+            Long id,
+            publishers publisherData
+    ) {
 
         publishers publisher = findById(id);
 
         if (publisherData.getNamePublisher() != null) {
-            publisher.setNamePublisher(publisherData.getNamePublisher());
+            publisher.setNamePublisher(
+                    publisherData.getNamePublisher()
+            );
         }
 
         if (publisherData.getPhonePublisher() != null) {
-            publisher.setPhonePublisher(publisherData.getPhonePublisher());
+            publisher.setPhonePublisher(
+                    publisherData.getPhonePublisher()
+            );
         }
 
         if (publisherData.getWebsite() != null) {
-            publisher.setWebsite(publisherData.getWebsite());
+            publisher.setWebsite(
+                    publisherData.getWebsite()
+            );
         }
 
         return publishersRepository.save(publisher);
     }
+
 
     @Transactional
     public void delete(Long id) {
@@ -119,7 +172,8 @@ public class PublishersServices {
         publishers publisher = findById(id);
 
         if (booksRepository.existsByPublisherId(id)) {
-            throw new RuntimeException(
+
+            throw new ConflictException(
                     "Publisher cannot be deleted because it has registered books"
             );
         }

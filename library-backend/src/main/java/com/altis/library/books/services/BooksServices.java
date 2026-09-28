@@ -1,5 +1,8 @@
 package com.altis.library.books.services;
 
+import com.altis.library.exceptions.BusinessException;
+import com.altis.library.exceptions.ConflictException;
+import com.altis.library.exceptions.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.altis.library.books.models.dtos.BooksRequestDTO;
@@ -36,13 +39,15 @@ public class BooksServices {
     public BooksResponseDTO create(BooksRequestDTO bookData) {
 
         if (booksRepository.existsByIsbn(bookData.isbn())) {
-            throw new RuntimeException("ISBN already registered");
+            throw new ConflictException("ISBN already registered");
         }
 
         publishers publisher = publishersRepository
                 .findById(bookData.publisherId())
                 .orElseThrow(() ->
-                        new RuntimeException("Publisher not found")
+                        new ResourceNotFoundException(
+                                "Publisher not found with id: " + bookData.publisherId()
+                        )
                 );
 
         books book = new books();
@@ -80,7 +85,9 @@ public class BooksServices {
 
         return booksRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Book not found")
+                        new ResourceNotFoundException(
+                                "Book not found with id: " + id
+                        )
                 );
     }
 
@@ -92,7 +99,9 @@ public class BooksServices {
         publishers publisher = publishersRepository
                 .findById(bookData.publisherId())
                 .orElseThrow(() ->
-                        new RuntimeException("Publisher not found")
+                        new ResourceNotFoundException(
+                                "Publisher not found with id: " + bookData.publisherId()
+                        )
                 );
 
         book.setTitle(bookData.title());
@@ -133,7 +142,10 @@ public class BooksServices {
             publishers publisher = publishersRepository
                     .findById(bookData.publisherId())
                     .orElseThrow(() ->
-                            new RuntimeException("Publisher not found")
+                            new ResourceNotFoundException(
+                                    "Publisher not found with id: "
+                                            + bookData.publisherId()
+                            )
                     );
 
             book.setPublisher(publisher);
@@ -148,7 +160,7 @@ public class BooksServices {
         books book = findById(id);
 
         if (rentsRepository.existsByBookId(id)) {
-            throw new RuntimeException(
+            throw new ConflictException(
                     "Book cannot be deleted because it has registered rents"
             );
         }

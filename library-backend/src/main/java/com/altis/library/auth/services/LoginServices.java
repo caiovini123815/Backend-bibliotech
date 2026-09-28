@@ -52,6 +52,7 @@ public class LoginServices {
         String token = tokenServices.generateToken(user);
 
         return new LoginResponseDTO(
+                user.getId(),
                 token
         );
     }
